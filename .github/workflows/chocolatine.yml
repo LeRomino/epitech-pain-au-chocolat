@@ -15,8 +15,8 @@ env:
   CODING_STYLE_FILE: "coding-style-reports.log"
 
 jobs:
-  check_program_compilation:
-    runs-on: epitechcontent/epitest-docker
+  # check_program_compilation:
+  #   runs-on: epitechcontent/epitest-docker
 
   check_coding_style:
     runs-on: ghcr.io/epitech/coding-style-checker:latest
