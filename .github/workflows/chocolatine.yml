@@ -11,7 +11,6 @@ on:
 env:
   MIRROR_URL: "git@github.com:EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann.git"
   EXECUTABLES: "a.out"
-  MIRROR_REPOSITORY: "EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann"
   CODING_STYLE_FILE: "coding-style-reports.log"
 
 jobs:
@@ -19,6 +18,7 @@ jobs:
   #   runs-on: epitechcontent/epitest-docker
 
   check_coding_style:
+    if: github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
     runs-on: ghcr.io/epitech/coding-style-checker:latest
     steps:
       - name: Checkout source code
@@ -39,7 +39,7 @@ jobs:
           fi
 
   repository-mirroring:
-    if: github.event_name == 'push' && github.repository != env.MIRROR_REPOSITORY
+    if: github.event_name == 'push' && github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
     needs: check_coding_style
     runs-on: ubuntu-latest
     steps:
