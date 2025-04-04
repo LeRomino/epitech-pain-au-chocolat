@@ -31,12 +31,12 @@ jobs:
         run: check.sh $(pwd) $(pwd)
       - name: Check coding style errors
         run: |
-          if [ -s rempli.log ]
+          if [ -s coding-style-reports.log ]
           then
           while IFS=":" read -r path line error_title error_name || [ -n "$p" ]
           do
           echo "::error file={$path},line={$line},title={$error_title}::$error_name"
-          done < rempli.log
+          done < coding-style-reports.log
           exit 1
           fi
 
