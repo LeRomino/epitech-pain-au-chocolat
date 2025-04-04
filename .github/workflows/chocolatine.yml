@@ -14,9 +14,6 @@ env:
   CODING_STYLE_FILE: "coding-style-reports.log"
 
 jobs:
-  # check_program_compilation:
-  #   runs-on: epitechcontent/epitest-docker
-
   check_coding_style:
     if: github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
     runs-on: ubuntu-latest
@@ -40,9 +37,20 @@ jobs:
           exit 1
           fi
 
+  check_program_compilation:
+    if: github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+      - name: Compilation
+        run: make
+      - name: Clean
+        run: make clean
+
   repository-mirroring:
     if: github.event_name == 'push' && github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
-    needs: check_coding_style
+    needs: [check_coding_style, check_program_compilation]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
