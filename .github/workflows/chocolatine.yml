@@ -39,6 +39,7 @@ jobs:
 
   check_program_compilation:
     if: github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
+    needs: check_coding_style
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker
