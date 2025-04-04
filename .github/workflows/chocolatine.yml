@@ -1,0 +1,54 @@
+name: Repository mirroring
+run-name: ${{ github.actor }}
+on:
+  push:
+    branches-ignore:
+      - "ga-ignore-*"
+  pull_request:
+    branches-ignore:
+      - "ga-ignore-*"
+
+env:
+  MIRROR_URL: "git@github.com:EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann.git"
+  EXECUTABLES: "a.out"
+  MIRROR_REPOSITORY: "EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann"
+  CODING_STYLE_FILE: "coding-style-reports.log"
+
+jobs:
+  check_program_compilation:
+    runs-on: epitechcontent/epitest-docker
+
+  check_coding_style:
+    runs-on: ghcr.io/epitech/coding-style-checker:latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run coding style checker script
+        run: check.sh $(pwd) $(pwd)
+      - name: Check coding style errors
+        run: |
+          if [ -a rempli.log ] && [ -s rempli.log ]
+          then
+          while IFS=":" read -r path line error_title error_name || [ -n "$p" ]
+          do
+          echo "::error file={$path},line={$line},title={$error_title}::$error_name"
+          done < rempli.log
+          exit 1
+          fi
+
+  repository-mirroring:
+    if: github.event_name == 'push' && github.repository != env.MIRROR_REPOSITORY
+    needs: check_coding_style
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mirror repository
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ env.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY_CHOCOLATINE }}
