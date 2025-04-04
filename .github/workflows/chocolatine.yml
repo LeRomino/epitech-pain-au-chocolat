@@ -35,7 +35,7 @@ jobs:
           then
           while IFS=":" read -r path line error_title error_name || [ -n "$p" ]
           do
-          echo "::error file={$path},line={$line},title={$error_title}::$error_name"
+          echo "::error file=$path,line=$line,title=$error_title::$error_name"
           done < coding-style-reports.log
           exit 1
           fi
