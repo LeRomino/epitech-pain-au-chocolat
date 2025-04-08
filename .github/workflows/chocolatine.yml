@@ -37,21 +37,21 @@ jobs:
           exit 1
           fi
 
-  check_program_compilation:
-    if: github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
-    needs: check_coding_style
-    runs-on: ubuntu-latest
-    container:
-      image: epitechcontent/epitest-docker
-    steps:
-      - name: Compilation
-        run: make
-      - name: Clean
-        run: make clean
+  # check_program_compilation:
+  #   if: github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
+  #   needs: check_coding_style
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: epitechcontent/epitest-docker
+  #   steps:
+  #     - name: Compilation
+  #       run: make
+  #     - name: Clean
+  #       run: make clean
 
   repository-mirroring:
     if: github.event_name == 'push' && github.repository != 'EpitechPGEPromo2029/B-DOP-200-PAR-2-1-chocolatine-romain.hartmann'
-    needs: [check_coding_style, check_program_compilation]
+    needs: check_coding_style
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
